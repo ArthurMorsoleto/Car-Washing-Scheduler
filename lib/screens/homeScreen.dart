@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
     var buttonStyle = ButtonStyle(
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(8),
                 side: BorderSide(color: Colors.black))));
 
     Widget homeButton(String buttonText) {
