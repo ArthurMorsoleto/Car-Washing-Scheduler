@@ -101,12 +101,7 @@ class _RegisterClientScreenState extends State<RegisterClientScreen> {
             child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    side: BorderSide(color: Colors.black)))),
+                    style: buttonStyle,
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Text("salvar",
