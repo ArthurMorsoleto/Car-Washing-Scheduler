@@ -1,4 +1,4 @@
-import 'package:car_washing_app/screens/homeScreen.dart';
+import 'package:car_washing_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 
