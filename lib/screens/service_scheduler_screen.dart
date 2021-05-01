@@ -3,9 +3,15 @@ import 'dart:convert';
 import 'package:car_washing_app/model/client.dart';
 import 'package:car_washing_app/utils/string_utils.dart';
 import 'package:car_washing_app/utils/widget_utils.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/*
+TODO O botão de agendar o serviço deverá validar
+ se o horário agendado está dentro do horário de funcionamento da empresa (08:00 às 17:00, todos os dias).
+*/
 
 enum ServiceType { simpleWash, completeWash, completeWashAndWax }
 
@@ -65,6 +71,21 @@ class _ScheduleServiceScreenState extends State<ScheduleServiceScreen> {
                 items: _clientList.map((e) => e.name).toList(),
                 label: "selecione um cliente",
                 onChanged: (value) => _setSelectedClient(value),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: DateTimePicker(
+                  type: DateTimePickerType.dateTimeSeparate,
+                  dateMask: 'dd/MM/yyyy',
+                  initialValue: DateTime.now().toString(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                  icon: Icon(Icons.event),
+                  dateLabelText: "Data",
+                  timeLabelText: "Hora",
+                  onChanged: (val) => print(val),
+                  onSaved: (val) => print(val),
+                ),
               ),
               Column(children: <Widget>[
                 ListTile(

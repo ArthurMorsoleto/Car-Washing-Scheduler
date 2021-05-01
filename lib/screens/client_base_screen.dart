@@ -5,6 +5,11 @@ import 'package:car_washing_app/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/*
+TODO essa tela terá a lista de clientes cadastrados em ordem crescente pelo nome.
+TODO Ao selecionar um cliente deverá ser apresentada para o usuário a opção de excluir o cliente, bem como os seus serviços agendados.
+*/
+
 class ClientBaseScreen extends StatefulWidget {
   @override
   _ClientBaseScreenState createState() => _ClientBaseScreenState();
