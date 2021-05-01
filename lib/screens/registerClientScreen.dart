@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:car_washing_app/model/client.dart';
+import 'package:car_washing_app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterClientScreen extends StatefulWidget {
   @override
@@ -8,6 +13,7 @@ class RegisterClientScreen extends StatefulWidget {
 class _RegisterClientScreenState extends State<RegisterClientScreen> {
   final _clientNameController = TextEditingController();
   final _clientPhoneController = TextEditingController();
+  final key = GlobalKey<ScaffoldState>();
 
   _inputDecoration(String labelText, [IconData icon]) {
     var border = OutlineInputBorder(
@@ -32,20 +38,37 @@ class _RegisterClientScreenState extends State<RegisterClientScreen> {
     );
   }
 
-  _saveClient() {
+  _saveClient() async {
     var name = _clientNameController.text;
     var phone = _clientPhoneController.text;
     if (name.isEmpty || phone.isEmpty) {
-      // TODO show save error, fields should not be empty
+      _showSnackBar("ambos os campos devem estar preenchidos");
     } else {
-      // TODO create Client class
-      // TODO save SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var data = prefs.getString(CLIENT_BASE_KEY);
+
+      List<Client> clientList = [];
+      if (data != null) {
+        var objs = jsonDecode(data) as List;
+        clientList = objs.map((e) => Client.fromJson(e)).toList();
+      }
+
+      var _client = Client(name: name, phone: phone);
+      clientList.add(_client);
+      prefs.setString(CLIENT_BASE_KEY, jsonEncode(clientList));
+      Navigator.pop(context);
     }
+  }
+
+  _showSnackBar(String message) {
+    ScaffoldMessenger.of(key.currentContext)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: key,
       appBar: AppBar(
         title: Text("cadastro de cliente",
             style: TextStyle(fontWeight: FontWeight.bold)),
@@ -67,6 +90,7 @@ class _RegisterClientScreenState extends State<RegisterClientScreen> {
                           _inputDecoration("nome", Icons.account_circle)),
                 ),
                 TextField(
+                    inputFormatters: [phoneFormatter],
                     controller: _clientPhoneController,
                     keyboardType: TextInputType.phone,
                     decoration:
@@ -90,7 +114,7 @@ class _RegisterClientScreenState extends State<RegisterClientScreen> {
                           style: TextStyle(
                               fontSize: 14, fontWeight: FontWeight.bold)),
                     ),
-                    onPressed: () => _saveClient)),
+                    onPressed: () => _saveClient())),
           )
         ]),
       ),

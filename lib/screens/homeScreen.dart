@@ -48,7 +48,6 @@ class HomeScreen extends StatelessWidget {
             )),
         centerTitle: false,
       ),
-      backgroundColor: Colors.white60,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
