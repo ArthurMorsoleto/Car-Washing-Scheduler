@@ -2,7 +2,7 @@ import 'package:car_washing_app/screens/client_base_screen.dart';
 import 'package:car_washing_app/screens/register_client_screen.dart';
 import 'package:car_washing_app/screens/schedule_screen.dart';
 import 'package:car_washing_app/screens/service_scheduler_screen.dart';
-import 'package:car_washing_app/utils/utils.dart';
+import 'package:car_washing_app/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {

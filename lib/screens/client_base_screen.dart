@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:car_washing_app/model/client.dart';
-import 'package:car_washing_app/utils/utils.dart';
+import 'package:car_washing_app/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
