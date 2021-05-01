@@ -1,5 +1,11 @@
+import 'dart:convert';
+
+import 'package:car_washing_app/model/client.dart';
+import 'package:car_washing_app/utils/string_utils.dart';
 import 'package:car_washing_app/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScheduleServiceScreen extends StatefulWidget {
   @override
@@ -7,6 +13,38 @@ class ScheduleServiceScreen extends StatefulWidget {
 }
 
 class _ScheduleServiceScreenState extends State<ScheduleServiceScreen> {
+  List<Client> _clientList = [];
+  Client _selectedClient;
+
+  @override
+  void initState() {
+    super.initState();
+    loadClientList();
+  }
+
+  void loadClientList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString(CLIENT_BASE_KEY);
+    if (data != null) {
+      setState(() {
+        var objs = jsonDecode(data) as List;
+        _clientList = objs.map((e) => Client.fromJson(e)).toList();
+      });
+    }
+  }
+
+  void _setSelectedClient(String value) {
+    _selectedClient = _clientList.firstWhere((e) => e.name == value);
+  }
+
+  void _scheduleService() {
+    if (_selectedClient != null) {
+      debugPrint(_selectedClient.name);
+    } else {
+      showSnackBar(context, "necessário escolher um cliente");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,6 +55,14 @@ class _ScheduleServiceScreenState extends State<ScheduleServiceScreen> {
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Stack(children: [
+          DropdownSearch<String>(
+            mode: Mode.DIALOG,
+            showSearchBox: true,
+            showSelectedItem: true,
+            items: _clientList.map((e) => e.name).toList(),
+            label: "selecione um cliente",
+            onChanged: (value) => _setSelectedClient(value),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: SizedBox(
@@ -30,7 +76,7 @@ class _ScheduleServiceScreenState extends State<ScheduleServiceScreen> {
                           style: TextStyle(
                               fontSize: 14, fontWeight: FontWeight.bold)),
                     ),
-                    onPressed: () => {})),
+                    onPressed: () => _scheduleService())),
           )
         ]),
       ),

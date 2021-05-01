@@ -43,7 +43,7 @@ class _RegisterClientScreenState extends State<RegisterClientScreen> {
     var name = _clientNameController.text;
     var phone = _clientPhoneController.text;
     if (name.isEmpty || phone.isEmpty) {
-      _showSnackBar("ambos os campos devem estar preenchidos");
+      showSnackBar(context, "ambos os campos devem estar preenchidos");
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var data = prefs.getString(CLIENT_BASE_KEY);
@@ -59,11 +59,6 @@ class _RegisterClientScreenState extends State<RegisterClientScreen> {
       prefs.setString(CLIENT_BASE_KEY, jsonEncode(clientList));
       Navigator.pop(context);
     }
-  }
-
-  _showSnackBar(String message) {
-    ScaffoldMessenger.of(key.currentContext)
-        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
