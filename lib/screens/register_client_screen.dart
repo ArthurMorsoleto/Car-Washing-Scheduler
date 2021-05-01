@@ -72,42 +72,40 @@ class _RegisterClientScreenState extends State<RegisterClientScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
-        child: Stack(children: [
-          Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: TextField(
-                      controller: _clientNameController,
-                      keyboardType: TextInputType.name,
-                      decoration:
-                          _inputDecoration("nome", Icons.account_circle)),
-                ),
-                TextField(
-                    inputFormatters: [phoneFormatter],
-                    controller: _clientPhoneController,
-                    keyboardType: TextInputType.phone,
-                    decoration:
-                        _inputDecoration("telefone", Icons.phone_iphone)),
-              ]),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                    style: buttonStyle,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Text("salvar",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold)),
-                    ),
-                    onPressed: () => _saveClient())),
-          )
-        ]),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: TextField(
+                  controller: _clientNameController,
+                  keyboardType: TextInputType.name,
+                  decoration: _inputDecoration("nome", Icons.account_circle)),
+            ),
+            TextField(
+                inputFormatters: [phoneFormatter],
+                controller: _clientPhoneController,
+                keyboardType: TextInputType.phone,
+                decoration: _inputDecoration("telefone", Icons.phone_iphone)),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        style: buttonStyle,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text("salvar",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold)),
+                        ),
+                        onPressed: () => _saveClient())),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
