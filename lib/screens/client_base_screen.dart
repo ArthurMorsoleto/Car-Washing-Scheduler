@@ -1,14 +1,11 @@
 import 'dart:convert';
 
 import 'package:car_washing_app/model/client.dart';
+import 'package:car_washing_app/model/service.dart';
 import 'package:car_washing_app/utils/string_utils.dart';
+import 'package:car_washing_app/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-/*
-TODO essa tela terá a lista de clientes cadastrados em ordem crescente pelo nome.
-TODO Ao selecionar um cliente deverá ser apresentada para o usuário a opção de excluir o cliente, bem como os seus serviços agendados.
-*/
 
 class ClientBaseScreen extends StatefulWidget {
   @override
@@ -36,6 +33,36 @@ class _ClientBaseScreenState extends State<ClientBaseScreen> {
     }
   }
 
+  _showAlertDialog(int index) {
+    showAlertDialog(context,
+        title: "confimar",
+        content: "deseja excluir esse cliente?",
+        confirmFunction: _deleteItem(index),
+        index: index);
+  }
+
+  _deleteItem(int index) async {
+    var currentClient = _clientList[index];
+    setState(() {
+      _clientList.removeAt(index);
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(CLIENT_BASE_KEY, jsonEncode(_clientList));
+
+    var data = prefs.getString(WASH_SERVICE_LIST_KEY);
+    if (data != null) {
+      var objs = jsonDecode(data) as List;
+      var serviceList = objs.map((e) => WashService.fromJson(e)).toList();
+      //TODO test this logic
+      serviceList.forEach((element) {
+        if (element.client.name == currentClient.name) {
+          serviceList.remove(element);
+        }
+      });
+      prefs.setString(WASH_SERVICE_LIST_KEY, jsonEncode(serviceList));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +75,7 @@ class _ClientBaseScreenState extends State<ClientBaseScreen> {
             return ListTile(
               title: Text(_clientList[index].name),
               subtitle: Text(_clientList[index].phone),
+              onLongPress: _showAlertDialog(index),
             );
           },
           separatorBuilder: (context, index) => Divider(),
