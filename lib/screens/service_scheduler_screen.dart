@@ -9,11 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/*
-TODO O botão de agendar o serviço deverá validar
- se o horário agendado está dentro do horário de funcionamento da empresa (08:00 às 17:00, todos os dias).
-*/
-
 enum ServiceType { simpleWash, completeWash, completeWashAndWax }
 
 extension ServiceTypeExtension on ServiceType {

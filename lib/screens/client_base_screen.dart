@@ -31,6 +31,7 @@ class _ClientBaseScreenState extends State<ClientBaseScreen> {
       setState(() {
         var objs = jsonDecode(data) as List;
         _clientList = objs.map((e) => Client.fromJson(e)).toList();
+        _clientList.sort((a, b) => a.name.compareTo(b.name));
       });
     }
   }
