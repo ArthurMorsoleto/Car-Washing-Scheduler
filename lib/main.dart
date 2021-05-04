@@ -9,11 +9,11 @@ void main() {
   ));
 }
 
-Widget _introScreen() { // TODO move this widget to another file
+Widget _introScreen() {
   return Stack(
     children: <Widget>[
       SplashScreen(
-        seconds: 2, // TODO when is first login should be 4
+        seconds: 2,
         gradientBackground: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
