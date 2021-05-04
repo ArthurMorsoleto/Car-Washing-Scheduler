@@ -20,7 +20,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     _reloadList();
   }
 
-  //TODO test sort logic
   _reloadList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getString(WASH_SERVICE_LIST_KEY);
@@ -28,8 +27,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       setState(() {
         var objs = jsonDecode(data) as List;
         _washServiceList = objs.map((e) => WashService.fromJson(e)).toList();
-        _washServiceList
-            .sort((a, b) => a.dateTime.compareTo(b.dateTime));
+        _washServiceList.sort((a, b) => a.dateTime.compareTo(b.dateTime));
       });
     }
   }
@@ -39,8 +37,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       _washServiceList.removeAt(index);
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(
-        WASH_SERVICE_LIST_KEY, jsonEncode(_washServiceList)); //TODO test
+    prefs.setString(WASH_SERVICE_LIST_KEY, jsonEncode(_washServiceList));
   }
 
   @override
@@ -54,12 +51,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(
-                  '${_washServiceList[index].dateTime} - ${_washServiceList[index].serviceType}'),
+                  '${_washServiceList[index].dateTime} - Cliente: ${_washServiceList[index].client.name}'),
+              subtitle: Text(_washServiceList[index].serviceType),
               onLongPress: () => showAlertDialog(context,
-                  index: index,
+                  title: "confimar",
                   content: "deseja excluir esse serviço?",
-                  title: "confirmar",
-                  confirmFunction: _deleteItem(index)),
+                  confirmFunction: _deleteItem,
+                  index: index),
             );
           },
           separatorBuilder: (context, index) => Divider(),

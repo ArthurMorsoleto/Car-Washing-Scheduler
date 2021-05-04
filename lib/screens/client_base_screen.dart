@@ -33,14 +33,6 @@ class _ClientBaseScreenState extends State<ClientBaseScreen> {
     }
   }
 
-  _showAlertDialog(int index) {
-    showAlertDialog(context,
-        title: "confimar",
-        content: "deseja excluir esse cliente?",
-        confirmFunction: _deleteItem(index),
-        index: index);
-  }
-
   _deleteItem(int index) async {
     var currentClient = _clientList[index];
     setState(() {
@@ -53,12 +45,14 @@ class _ClientBaseScreenState extends State<ClientBaseScreen> {
     if (data != null) {
       var objs = jsonDecode(data) as List;
       var serviceList = objs.map((e) => WashService.fromJson(e)).toList();
-      //TODO test this logic
-      serviceList.forEach((element) {
-        if (element.client.name == currentClient.name) {
-          serviceList.remove(element);
-        }
-      });
+
+      var elementToRemove = serviceList.firstWhere(
+        (element) => element.client.name == currentClient.name,
+        orElse: () => null,
+      );
+      if (elementToRemove != null) {
+        serviceList.remove(elementToRemove);
+      }
       prefs.setString(WASH_SERVICE_LIST_KEY, jsonEncode(serviceList));
     }
   }
@@ -75,7 +69,11 @@ class _ClientBaseScreenState extends State<ClientBaseScreen> {
             return ListTile(
               title: Text(_clientList[index].name),
               subtitle: Text(_clientList[index].phone),
-              onLongPress: _showAlertDialog(index),
+              onLongPress: () => showAlertDialog(context,
+                  title: "confimar",
+                  content: "deseja excluir esse cliente?",
+                  confirmFunction: _deleteItem,
+                  index: index),
             );
           },
           separatorBuilder: (context, index) => Divider(),
